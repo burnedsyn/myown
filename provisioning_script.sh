@@ -47,7 +47,7 @@ vllm serve Qwen/Qwen3.6-35B-A3B \
   --max-num-seqs 2 \
   --max-num-batched-tokens 6144 \
   --block-size 128 \
-  --kv-cache-dtype turboquant \
+  --kv-cache-dtype fp8_e4m3 \
   --enable-chunked-prefill \
   --disable-log-stats
 
