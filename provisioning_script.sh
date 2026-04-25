@@ -24,3 +24,31 @@ else
     exit 1
 fi
 
+# Install accelerate
+echo "Installing vllm package..." | tee -a $LOG_FILE
+if pip install vllm; then
+    echo "vllm package installed successfully" | tee -a $LOG_FILE
+    pip show vllm | tee -a $LOG_FILE
+else
+    echo "Failed to install vllm package" | tee -a $LOG_FILE
+    exit 1
+fi
+
+echo "Installation completed at $(date)" | tee -a $LOG_FILE
+
+echo "start vllm server" | tee -a $LOG_FILE
+
+vllm serve Qwen/Qwen3.6-35B-A3B \
+  --host 0.0.0.0 \
+  --port 8000 \
+  --dtype bfloat16 \
+  --max-model-len 131072 \
+  --gpu-memory-utilization 0.90 \
+  --max-num-seqs 2 \
+  --max-num-batched-tokens 6144 \
+  --block-size 128 \
+  --kv-cache-dtype turboquant \
+  --enable-chunked-prefill \
+  --disable-log-stats
+
+  
